@@ -69,50 +69,50 @@ jobs:
         name: jacoco-report
         path: testreport/target/site/jacoco-aggregate/
 
-    - name: Tag service dev docker image
-      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:dev
-
-    - name: Push service dev docker image
-      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev
-
-    - name: Tag service git id docker image
-      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
-
-    - name: Push service git id docker image.
-      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
-
-    - name: Tag documentation dev docker image
-      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:dev
-
-    - name: Push documentation dev docker image
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:dev
-
-    - name: Tag documentation git id docker image
-      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:${{ github.sha }}
-
-    - name: Push documentation git id docker image.
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:${{ github.sha }}
-
-    - name: Push latest service docker image
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:latest
-
-    - name: Tag version service docker image
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
-
-    - name: Push version service docker image.
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
-
-    - name: Push latest documentation docker image
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:latest
-
-    - name: Tag version documentation docker image
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:${{ steps.tag.outputs.VERSION }}
-
-    - name: Push version documentation docker image.
-      if: ${{ steps.tag.conclusion != 'skipped' }}
-      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:${{ steps.tag.outputs.VERSION }}
+#    - name: Tag service dev docker image
+#      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:dev
+#
+#    - name: Push service dev docker image
+#      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:dev
+#
+#    - name: Tag service git id docker image
+#      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
+#
+#    - name: Push service git id docker image.
+#      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ github.sha }}
+#
+#    - name: Tag documentation dev docker image
+#      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:dev
+#
+#    - name: Push documentation dev docker image
+#      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:dev
+#
+#    - name: Tag documentation git id docker image
+#      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:${{ github.sha }}
+#
+#    - name: Push documentation git id docker image.
+#      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:${{ github.sha }}
+#
+#    - name: Push latest service docker image
+#      if: ${{ steps.tag.conclusion != 'skipped' }}
+#      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:latest
+#
+#    - name: Tag version service docker image
+#      if: ${{ steps.tag.conclusion != 'skipped' }}
+#      run: ./build/docker-tag.sh ${{ env.DOCKER_SERVICE }}:latest ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
+#
+#    - name: Push version service docker image.
+#      if: ${{ steps.tag.conclusion != 'skipped' }}
+#      run: ./build/docker-push.sh ${{ env.DOCKER_SERVICE }}:${{ steps.tag.outputs.VERSION }}
+#
+#    - name: Push latest documentation docker image
+#      if: ${{ steps.tag.conclusion != 'skipped' }}
+#      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:latest
+#
+#    - name: Tag version documentation docker image
+#      if: ${{ steps.tag.conclusion != 'skipped' }}
+#      run: ./build/docker-tag.sh ${{ env.DOCKER_DOCUMENTATION }}:latest ${{ env.DOCKER_DOCUMENTATION }}:${{ steps.tag.outputs.VERSION }}
+#
+#    - name: Push version documentation docker image.
+#      if: ${{ steps.tag.conclusion != 'skipped' }}
+#      run: ./build/docker-push.sh ${{ env.DOCKER_DOCUMENTATION }}:${{ steps.tag.outputs.VERSION }}
