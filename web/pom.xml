@@ -71,7 +71,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>kvalitetsit/regsj-testkomponent</name>
+                            <name>regsj/regsj-testkomponent</name>
                             <build>
                                 <tags>
                                     <tag>latest</tag>

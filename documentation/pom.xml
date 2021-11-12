@@ -95,7 +95,7 @@
 				<configuration>
 					<images>
 						<image>
-							<name>kvalitetsit/regsj-testkomponent-documentation</name>
+							<name>regsj/regsj-testkomponent-documentation</name>
 							<build>
 								<tags>
 									<tag>dev</tag>
