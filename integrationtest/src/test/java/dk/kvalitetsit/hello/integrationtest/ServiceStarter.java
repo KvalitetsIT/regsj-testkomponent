@@ -25,11 +25,11 @@ public class ServiceStarter {
     public void startServices() {
         dockerNetwork = Network.newNetwork();
 
-        setupDatabaseContainer();
+//        setupDatabaseContainer();
 
-        System.setProperty("JDBC.URL", jdbcUrl);
-        System.setProperty("JDBC.USER", "hellouser");
-        System.setProperty("JDBC.PASS", "secret1234");
+//        System.setProperty("JDBC.URL", jdbcUrl);
+//        System.setProperty("JDBC.USER", "hellouser");
+//        System.setProperty("JDBC.PASS", "secret1234");
 
         SpringApplication.run((VideoLinkHandlerApplication.class));
     }
