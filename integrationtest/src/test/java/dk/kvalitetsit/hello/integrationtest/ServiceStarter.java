@@ -27,6 +27,7 @@ public class ServiceStarter {
 
 //        setupDatabaseContainer();
 
+        System.setProperty("CONFIGURABLE_TEXT", "En tekst");
 //        System.setProperty("JDBC.URL", jdbcUrl);
 //        System.setProperty("JDBC.USER", "hellouser");
 //        System.setProperty("JDBC.PASS", "secret1234");

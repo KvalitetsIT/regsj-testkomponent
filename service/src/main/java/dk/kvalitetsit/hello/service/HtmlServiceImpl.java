@@ -8,9 +8,11 @@ import java.net.UnknownHostException;
 
 public class HtmlServiceImpl implements HtmlService {
     private final VersionProvider VersionProvider;
+    private final String configurableText;
 
-    public HtmlServiceImpl(VersionProvider VersionProvider) {
+    public HtmlServiceImpl(VersionProvider VersionProvider, String configurableText) {
         this.VersionProvider = VersionProvider;
+        this.configurableText = configurableText;
     }
 
     @Override
@@ -18,6 +20,7 @@ public class HtmlServiceImpl implements HtmlService {
         var htmlInfo = new HtmlInfo();
         htmlInfo.setVersion(VersionProvider.getVersion());
         htmlInfo.setHostName(Inet4Address.getLocalHost().getHostName());
+        htmlInfo.setConfigurableText(configurableText);
 
         return htmlInfo;
     }

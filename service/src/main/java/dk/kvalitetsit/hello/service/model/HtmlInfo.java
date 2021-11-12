@@ -3,6 +3,7 @@ package dk.kvalitetsit.hello.service.model;
 public class HtmlInfo {
     private String version;
     private String hostName;
+    private String configurableText;
 
     public String getVersion() {
         return version;
@@ -18,5 +19,13 @@ public class HtmlInfo {
 
     public String getHostName() {
         return hostName;
+    }
+
+    public void setConfigurableText(String configurableText) {
+        this.configurableText = configurableText;
+    }
+
+    public String getConfigurableText() {
+        return configurableText;
     }
 }
