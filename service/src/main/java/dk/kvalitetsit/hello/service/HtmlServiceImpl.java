@@ -13,10 +13,12 @@ public class HtmlServiceImpl implements HtmlService {
 
     private final VersionProvider VersionProvider;
     private final String configurableText;
+    private final String environment;
 
-    public HtmlServiceImpl(VersionProvider VersionProvider, String configurableText) {
+    public HtmlServiceImpl(VersionProvider VersionProvider, String configurableText, String environment) {
         this.VersionProvider = VersionProvider;
         this.configurableText = configurableText;
+        this.environment = environment;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class HtmlServiceImpl implements HtmlService {
         htmlInfo.setVersion(VersionProvider.getVersion());
         htmlInfo.setHostName(Inet4Address.getLocalHost().getHostName());
         htmlInfo.setConfigurableText(configurableText);
+        htmlInfo.setEnvironment(environment);
 
         return htmlInfo;
     }

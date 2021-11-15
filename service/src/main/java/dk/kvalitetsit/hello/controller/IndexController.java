@@ -31,6 +31,7 @@ public class IndexController {
         modelAndView.addObject("version", info.getVersion());
         modelAndView.addObject("hostname", info.getHostName());
         modelAndView.addObject("configurableText", info.getConfigurableText());
+        modelAndView.addObject("environment", info.getEnvironment());
 
         return modelAndView;
     }

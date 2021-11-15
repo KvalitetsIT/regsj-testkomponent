@@ -4,6 +4,7 @@ public class HtmlInfo {
     private String version;
     private String hostName;
     private String configurableText;
+    private String environment;
 
     public String getVersion() {
         return version;
@@ -27,5 +28,13 @@ public class HtmlInfo {
 
     public String getConfigurableText() {
         return configurableText;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
+    }
+
+    public String getEnvironment() {
+        return environment;
     }
 }
