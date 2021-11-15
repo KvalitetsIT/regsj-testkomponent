@@ -19,7 +19,7 @@ public class HelloConfiguration {
     }
 
     @Bean
-    public HtmlService htmlService(VersionProvider versionProvider,@Value("${CONFIGURABLE_TEXT}") String configurableText, @Value("${ENVIRONMENT") String environment) {
+    public HtmlService htmlService(VersionProvider versionProvider,@Value("${CONFIGURABLE_TEXT}") String configurableText, @Value("${ENVIRONMENT}") String environment) {
         return new HtmlServiceImpl(versionProvider, configurableText, environment);
     }
 
