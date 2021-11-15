@@ -28,12 +28,12 @@ public class HelloConfiguration {
         return new HtmlServiceImpl(versionProvider, configurableText, environment);
     }
 
-    @Bean
-    @RequestScope
-    public UserContextService userContextService(HttpServletRequest request,
-                                                 @Value("${usercontext.header.name}") String userContextHeaderName,
-                                                 @Value("${userattributes.org.key}") String userAttributeOrgKey) {
-        return new UserContextServiceImpl(request, userContextHeaderName, userAttributeOrgKey);
-    }
+//    @Bean
+//    @RequestScope
+//    public UserContextService userContextService(HttpServletRequest request,
+//                                                 @Value("${usercontext.header.name}") String userContextHeaderName,
+//                                                 @Value("${userattributes.org.key}") String userAttributeOrgKey) {
+//        return new UserContextServiceImpl(request, userContextHeaderName, userAttributeOrgKey);
+//    }
 
 }
