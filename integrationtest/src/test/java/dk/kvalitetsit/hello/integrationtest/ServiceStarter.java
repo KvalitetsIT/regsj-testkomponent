@@ -27,8 +27,12 @@ public class ServiceStarter {
 
 //        setupDatabaseContainer();
 
+        // Do not cache thymeleaf templates when running from IDE.
+        System.setProperty("spring.thymeleaf.cache", "false");
+
         System.setProperty("CONFIGURABLE_TEXT", "En tekst");
-        System.setProperty("ENVIRONMENT", "dev");
+        System.setProperty("ENVIRONMENT", "DEV");
+        System.setProperty("usercontext.header.name", "x-sessiondata");
 //        System.setProperty("JDBC.URL", jdbcUrl);
 //        System.setProperty("JDBC.USER", "hellouser");
 //        System.setProperty("JDBC.PASS", "secret1234");
@@ -69,6 +73,10 @@ public class ServiceStarter {
                 .withEnv("JDBC_PASS", "secret1234")
 
                 .withEnv("spring.flyway.locations", "classpath:db/migration,filesystem:/app/sql")
+
+                .withEnv("CONFIGURABLE_TEXT", "En tekst")
+                .withEnv("ENVIRONMENT", "DEV")
+                .withEnv("usercontext.header.name", "x-sessiondata")
 
 //                .withEnv("JVM_OPTS", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000")
 

@@ -1,5 +1,8 @@
 package dk.kvalitetsit.hello.session;
 
+import java.util.List;
+import java.util.Map;
+
 public interface UserContextService {
-    String getOrganisation();
+    Map<String, List<String>> getUserAttributes();
 }

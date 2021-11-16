@@ -4,27 +4,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 public class UserContextServiceImpl implements UserContextService {
     private final Logger logger = LoggerFactory.getLogger(UserContextServiceImpl.class);
     private final HttpServletRequest request;
     private final String userContextHeaderName;
     private SessionData sessionData;
-    private final String userAttributesOrgKey;
 
-    public UserContextServiceImpl(HttpServletRequest request, String userContextHeaderName, String userAttributesOrgKey) {
+    public UserContextServiceImpl(HttpServletRequest request, String userContextHeaderName) {
         this.request = request;
         this.userContextHeaderName = userContextHeaderName;
-        this.userAttributesOrgKey = userAttributesOrgKey;
     }
 
-    public String getOrganisation() {
-        SessionData sessionData = readSessionData();
-        if (sessionData.getUserAttributes().containsKey(userAttributesOrgKey)) {
-            return sessionData.getUserAttribute(userAttributesOrgKey);
-        }
-
-        return null;
+    @Override
+    public Map<String, List<String>> getUserAttributes() {
+        var sessionData = readSessionData();
+        return sessionData.getUserAttributes();
     }
 
     private SessionData readSessionData() {

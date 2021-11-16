@@ -18,23 +18,25 @@ public class UserContextServiceTest {
     @Before
     public void setup() {
         request = Mockito.mock(HttpServletRequest.class);
-        userContextService = new UserContextServiceImpl(request, headerName, orgKey);
+        userContextService = new UserContextServiceImpl(request, headerName);
     }
 
     @Test(expected = RuntimeException.class)
     public void testInvalidHeaderThrowsException() {
         Mockito.when(request.getHeader(headerName)).thenReturn("ÆÅØ");
 
-        userContextService.getOrganisation();
+        userContextService.getUserAttributes();
     }
 
     @Test
-    public void testGetOrganisation() {
+    public void testGetUserAttributes() {
         var input = "ew0KICAgICJVc2VyQXR0cmlidXRlcyI6IHsNCiAgICAgICAgIlVzZXJSb2xlcyI6IFsNCiAgICAgICAgICAgICJwcm92aXNpb25lcnJvbGUiDQogICAgICAgIF0sDQogICAgICAgICJPcmdhbmlzYXRpb24iOiBbInNvbWVfb3JnIl0NCiAgICB9DQp9";
         Mockito.when(request.getHeader(headerName)).thenReturn(input);
 
-        String organisation = userContextService.getOrganisation();
-        assertNotNull(organisation);
-        assertEquals("some_org", organisation);
+        var userAttributes = userContextService.getUserAttributes();
+        assertNotNull(userAttributes);
+        assertEquals(2, userAttributes.size());
+        assertEquals("[provisionerrole]", userAttributes.get("UserRoles").toString());
+        assertEquals("[some_org]", userAttributes.get("Organisation").toString());
     }
 }

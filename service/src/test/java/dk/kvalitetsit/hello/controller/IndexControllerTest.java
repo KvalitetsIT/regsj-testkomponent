@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -28,6 +30,7 @@ public class IndexControllerTest {
         var expectedHostName = "some_hostname";
         var expectedText = "some_text";
         var expectedEnvironment = "dev";
+        var expectedUserContext = new HashMap<String, List<String>>();
 
         Mockito.when(htmlService.getHtmlInfo()).then(a -> {
             var output = new HtmlInfo();
@@ -35,6 +38,7 @@ public class IndexControllerTest {
             output.setConfigurableText(expectedText);
             output.setEnvironment(expectedEnvironment);
             output.setVersion(expectedVersion);
+            output.setUserContextInformation(expectedUserContext);
 
             return output;
         });
@@ -47,5 +51,6 @@ public class IndexControllerTest {
         assertEquals(expectedEnvironment, result.getModel().get("environment"));
         assertEquals(expectedHostName, result.getModel().get("hostname"));
         assertEquals(expectedText, result.getModel().get("configurableText"));
+        assertEquals(expectedUserContext, result.getModel().get("userContext"));
     }
 }

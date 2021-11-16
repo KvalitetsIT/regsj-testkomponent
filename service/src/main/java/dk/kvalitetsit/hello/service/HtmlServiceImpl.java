@@ -1,6 +1,7 @@
 package dk.kvalitetsit.hello.service;
 
 import dk.kvalitetsit.hello.service.model.HtmlInfo;
+import dk.kvalitetsit.hello.session.UserContextService;
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,13 @@ public class HtmlServiceImpl implements HtmlService {
     private final VersionProvider VersionProvider;
     private final String configurableText;
     private final String environment;
+    private final UserContextService userContextService;
 
-    public HtmlServiceImpl(VersionProvider VersionProvider, String configurableText, String environment) {
+    public HtmlServiceImpl(VersionProvider VersionProvider, String configurableText, String environment, UserContextService userContextService) {
         this.VersionProvider = VersionProvider;
         this.configurableText = configurableText;
         this.environment = environment;
+        this.userContextService = userContextService;
     }
 
     @Override
@@ -30,6 +33,7 @@ public class HtmlServiceImpl implements HtmlService {
         htmlInfo.setHostName(Inet4Address.getLocalHost().getHostName());
         htmlInfo.setConfigurableText(configurableText);
         htmlInfo.setEnvironment(environment);
+        htmlInfo.setUserContextInformation(userContextService.getUserAttributes());
 
         return htmlInfo;
     }

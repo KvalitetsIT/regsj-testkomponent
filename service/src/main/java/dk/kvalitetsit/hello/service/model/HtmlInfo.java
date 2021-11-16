@@ -1,10 +1,14 @@
 package dk.kvalitetsit.hello.service.model;
 
+import java.util.List;
+import java.util.Map;
+
 public class HtmlInfo {
     private String version;
     private String hostName;
     private String configurableText;
     private String environment;
+    private Map<String, List<String>> userContextInformation;
 
     public String getVersion() {
         return version;
@@ -36,5 +40,13 @@ public class HtmlInfo {
 
     public String getEnvironment() {
         return environment;
+    }
+
+    public void setUserContextInformation(Map<String, List<String>> userContextInformation) {
+        this.userContextInformation = userContextInformation;
+    }
+
+    public Map<String, List<String>> getUserContextInformation() {
+        return userContextInformation;
     }
 }
