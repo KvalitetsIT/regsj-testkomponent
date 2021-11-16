@@ -1,8 +1,9 @@
 package dk.kvalitetsit.hello.controller;
 
 import dk.kvalitetsit.hello.service.HelloService;
-import dk.kvalitetsit.hello.service.model.HelloServiceInput;
 import org.openapitools.api.KithugsApi;
+import org.openapitools.model.Context;
+import org.openapitools.model.ContextResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +19,19 @@ public class HelloController implements KithugsApi {
     }
 
     @Override
-    public ResponseEntity<org.openapitools.model.HelloResponse> v1HelloPost(org.openapitools.model.HelloRequest helloRequest) {
-        logger.debug("Enter POST hello.");
+    public ResponseEntity<ContextResponse> restV1ContextGet() {
+        var contextInformation = helloService.helloServiceBusinessLogic();
 
-        var serviceInput = new HelloServiceInput();
-        serviceInput.setName(helloRequest.getName());
+        var response = new ContextResponse();
 
-        var serviceResponse = helloService.helloServiceBusinessLogic(serviceInput);
+        contextInformation.getUserContext().forEach((k, v) -> {
+            var contextItem = new Context();
+            contextItem.setAttributeName(k);
+            contextItem.setAttributeValue(v);
 
-        var helloResponse = new org.openapitools.model.HelloResponse();
-        helloResponse.setName(serviceResponse.getName());
-        helloResponse.setNow(serviceResponse.getNow().toOffsetDateTime());
+            response.addContextItem(contextItem);
+        });
 
-        return ResponseEntity.ok(helloResponse);
+        return ResponseEntity.ok(response);
     }
 }

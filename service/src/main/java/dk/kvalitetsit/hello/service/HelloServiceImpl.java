@@ -1,17 +1,20 @@
 package dk.kvalitetsit.hello.service;
 
-import dk.kvalitetsit.hello.service.model.HelloServiceInput;
 import dk.kvalitetsit.hello.service.model.HelloServiceOutput;
-
-import java.time.ZonedDateTime;
+import dk.kvalitetsit.hello.session.UserContextService;
 
 public class HelloServiceImpl implements HelloService {
-    @Override
-    public HelloServiceOutput helloServiceBusinessLogic(HelloServiceInput input) {
-        var output = new HelloServiceOutput();
-        output.setNow(ZonedDateTime.now());
-        output.setName(input.getName());
+    private final UserContextService userContextService;
 
-        return output;
+    public HelloServiceImpl(UserContextService userContextService) {
+        this.userContextService = userContextService;
+    }
+
+    @Override
+    public HelloServiceOutput helloServiceBusinessLogic() {
+        var helloServiceOutput = new HelloServiceOutput();
+        helloServiceOutput.setUserContext(userContextService.getUserAttributes());
+
+        return helloServiceOutput;
     }
 }

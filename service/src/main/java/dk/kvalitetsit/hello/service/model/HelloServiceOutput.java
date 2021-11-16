@@ -1,24 +1,16 @@
 package dk.kvalitetsit.hello.service.model;
 
-import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Map;
 
 public class HelloServiceOutput {
-    private String name;
-    private ZonedDateTime now;
+    private Map<String, List<String>> userContext;
 
-    public String getName() {
-        return name;
+    public Map<String, List<String>> getUserContext() {
+        return userContext;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ZonedDateTime getNow() {
-        return now;
-    }
-
-    public void setNow(ZonedDateTime now) {
-        this.now = now;
+    public void setUserContext(Map<String, List<String>> userContext) {
+        this.userContext = userContext;
     }
 }

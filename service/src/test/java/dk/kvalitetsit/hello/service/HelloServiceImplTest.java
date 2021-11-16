@@ -1,30 +1,33 @@
 package dk.kvalitetsit.hello.service;
 
-import dk.kvalitetsit.hello.service.model.HelloServiceInput;
+import dk.kvalitetsit.hello.session.UserContextService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class HelloServiceImplTest {
     private HelloService helloService;
+    private UserContextService userContextService;
 
     @Before
     public void setup() {
-        helloService = new HelloServiceImpl();
+        userContextService = Mockito.mock(UserContextService.class);
+        helloService = new HelloServiceImpl(userContextService);
     }
 
     @Test
     public void testValidInput() {
-        var input = new HelloServiceInput();
-        input.setName(UUID.randomUUID().toString());
+        var expectedUserAttributes = new HashMap<String, List<String>>();
+        Mockito.when(userContextService.getUserAttributes()).thenReturn(expectedUserAttributes);
 
-        var result = helloService.helloServiceBusinessLogic(input);
+        var result = helloService.helloServiceBusinessLogic();
         assertNotNull(result);
-        assertNotNull(result.getNow());
-        assertEquals(input.getName(), result.getName());
+        assertEquals(expectedUserAttributes, result.getUserContext());
     }
 }

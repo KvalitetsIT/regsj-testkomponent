@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 @EnableWebMvc
 public class HelloConfiguration {
     @Bean
-    public HelloService helloService() {
-        return new HelloServiceImpl();
+    public HelloService helloService(UserContextService userContextService) {
+        return new HelloServiceImpl(userContextService);
     }
 
     @Bean

@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  title: Kithugs
-  description: API description for KITHUGS.
+  title: Region Sjælland Testkomponent
+  description: API description for Region Sjælland Testkomponent.
   version: "1.0.0"
   contact:
     email: development@kvalitetitsit.dk
 tags:
-  - name: KITHUGS
-    description: KITHUGS related API's
+  - name: Testkompoent
+    description: Testkomponent related API's
 
 servers:
   - url: '{protocol}://{environment}:{port}'
@@ -26,26 +26,19 @@ servers:
           - 8080
         default: 8080
 paths:
-  /v1/hello:
-    post:
+  /rest/v1/context:
+    get:
       tags:
         - KITHUGS
-      summary: Call the thugs service
-      description: Post your name and get some hugs or meet some thugs.
-      requestBody:
-        description: Your name
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/helloRequest'
+      summary: Show user context
+      description: Return user context.
       responses:
         '200':
           description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/helloResponse'
+                $ref: '#/components/schemas/contextResponse'
 
 components:
   responses:
@@ -56,27 +49,29 @@ components:
     '403':
       description: "Forbidden. This could be because: <br> * The requested information does not belong the organisation of the user <br> * The calling user does not have the required roles"
   schemas:
-    helloResponse:
+    contextResponse:
       type: object
       required:
-        - name
-        - now
+        - context
       properties:
-        name:
-          description: Your name
-          type: string
-          example: "John Doe"
-        now:
-          description: Time request was receved
-          type: string
-          format: date-time
+        context:
+          type: array
+          items:
+            $ref: '#/components/schemas/context'
+          description: The context received in the call.
 
-    helloRequest:
+    context:
       type: object
       required:
-        - name
+        - attributeName
+        - attributeValue
       properties:
-        name:
-          description: Your name
+        attributeName:
+          description: The context attribute name.
           type: string
-          example: "John Doe"
+        attributeValue:
+          description: The context attribute value.
+          type: array
+          items:
+            type: string
+
