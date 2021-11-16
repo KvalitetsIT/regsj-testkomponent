@@ -6,8 +6,7 @@ import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class UserContextServiceTest {
     private final String headerName = "X-HEADER";
@@ -26,6 +25,29 @@ public class UserContextServiceTest {
         Mockito.when(request.getHeader(headerName)).thenReturn("ÆÅØ");
 
         userContextService.getUserAttributes();
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testMissingHeader() {
+        Mockito.when(request.getHeader(headerName)).thenReturn(null);
+
+        userContextService.getUserAttributes();
+    }
+
+    @Test
+    public void testIsPresentTrue() {
+        var input = "ew0KICAgICJVc2VyQXR0cmlidXRlcyI6IHsNCiAgICAgICAgIlVzZXJSb2xlcyI6IFsNCiAgICAgICAgICAgICJwcm92aXNpb25lcnJvbGUiDQogICAgICAgIF0sDQogICAgICAgICJPcmdhbmlzYXRpb24iOiBbInNvbWVfb3JnIl0NCiAgICB9DQp9";
+        Mockito.when(request.getHeader(headerName)).thenReturn(input);
+
+        assertTrue(userContextService.isPresentAndValid());
+    }
+
+    @Test
+    public void testIsPresentFalse() {
+        var input = "e30K";
+        Mockito.when(request.getHeader(headerName)).thenReturn(input);
+
+        assertFalse(userContextService.isPresentAndValid());
     }
 
     @Test

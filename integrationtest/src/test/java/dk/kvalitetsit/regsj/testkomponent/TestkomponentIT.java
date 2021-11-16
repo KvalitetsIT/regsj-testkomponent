@@ -5,6 +5,7 @@ import org.openapitools.client.ApiClient;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.api.TestKomponentApi;
 
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
@@ -31,7 +32,22 @@ public class TestkomponentIT extends AbstractIntegrationTest {
 
         assertEquals("Organisation", result.getContext().get(1).getAttributeName());
         assertEquals("[some_org]", result.getContext().get(1).getAttributeValue().toString());
+    }
 
+    @Test
+    public void testCallRestServiceNoSession() throws ApiException {
+        var apiClient = new ApiClient();
+        apiClient.setBasePath(getApiBasePath());
+
+        var helloApi = new TestKomponentApi(apiClient);
+
+        try {
+            helloApi.restV1ContextGetWithHttpInfo();
+            fail();
+        }
+        catch(ApiException e) {
+            assertEquals(403, e.getCode());
+        }
     }
 
     @Test
@@ -51,5 +67,17 @@ public class TestkomponentIT extends AbstractIntegrationTest {
         assertTrue(result.contains("En tekst"));
         assertTrue(result.contains("[provisionerrole]"));
         assertTrue(result.contains("[some_org]"));
+    }
+
+    @Test(expected = ForbiddenException.class)
+    public void testHtmlPageNoSession() {
+        WebTarget webTarget = ClientBuilder
+                .newClient()
+                .target(getApiBasePath())
+                .path("/html");
+
+        webTarget
+                .request()
+                .get(String.class);
     }
 }

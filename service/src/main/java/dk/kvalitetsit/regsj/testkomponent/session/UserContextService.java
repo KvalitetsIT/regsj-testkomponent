@@ -5,4 +5,6 @@ import java.util.Map;
 
 public interface UserContextService {
     Map<String, List<String>> getUserAttributes();
+
+    boolean isPresentAndValid();
 }

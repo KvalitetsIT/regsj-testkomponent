@@ -1,6 +1,7 @@
 package dk.kvalitetsit.regsj.testkomponent.controller;
 
 import dk.kvalitetsit.regsj.testkomponent.service.RestService;
+import dk.kvalitetsit.regsj.testkomponent.session.UserContext;
 import org.openapitools.api.TestKomponentApi;
 import org.openapitools.model.Context;
 import org.openapitools.model.ContextResponse;
@@ -18,6 +19,7 @@ public class RestController implements TestKomponentApi {
     }
 
     @Override
+    @UserContext
     public ResponseEntity<ContextResponse> restV1ContextGet() {
         var contextInformation = restService.helloServiceBusinessLogic();
 
