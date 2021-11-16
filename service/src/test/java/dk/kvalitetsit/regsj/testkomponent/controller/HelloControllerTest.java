@@ -1,6 +1,6 @@
 package dk.kvalitetsit.regsj.testkomponent.controller;
 
-import dk.kvalitetsit.regsj.testkomponent.service.HelloService;
+import dk.kvalitetsit.regsj.testkomponent.service.RestService;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutput;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,14 +15,14 @@ import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 public class HelloControllerTest {
-    private HelloController helloController;
-    private HelloService helloService;
+    private RestController helloController;
+    private RestService restService;
 
     @Before
     public void setup() {
-        helloService = Mockito.mock(HelloService.class);
+        restService = Mockito.mock(RestService.class);
 
-        helloController = new HelloController(helloService);
+        helloController = new RestController(restService);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class HelloControllerTest {
         expectedContext.put("a1", Arrays.asList("v1", "v2"));
         expectedContext.put("a2", Collections.singletonList("v1"));
 
-        Mockito.when(helloService.helloServiceBusinessLogic()).then(a -> {
+        Mockito.when(restService.helloServiceBusinessLogic()).then(a -> {
             HelloServiceOutput output = new HelloServiceOutput();
             output.setUserContext(expectedContext);
             return output;

@@ -1,7 +1,7 @@
 package dk.kvalitetsit.regsj.testkomponent.configuration;
 
-import dk.kvalitetsit.regsj.testkomponent.service.HelloService;
-import dk.kvalitetsit.regsj.testkomponent.service.HelloServiceImpl;
+import dk.kvalitetsit.regsj.testkomponent.service.RestService;
+import dk.kvalitetsit.regsj.testkomponent.service.RestServiceImpl;
 import dk.kvalitetsit.regsj.testkomponent.service.HtmlService;
 import dk.kvalitetsit.regsj.testkomponent.service.HtmlServiceImpl;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
@@ -17,10 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 
 @Configuration
 @EnableWebMvc
-public class HelloConfiguration {
+public class TestkomponentConfiguration {
     @Bean
-    public HelloService helloService(UserContextService userContextService) {
-        return new HelloServiceImpl(userContextService);
+    public RestService helloService(UserContextService userContextService) {
+        return new RestServiceImpl(userContextService);
     }
 
     @Bean

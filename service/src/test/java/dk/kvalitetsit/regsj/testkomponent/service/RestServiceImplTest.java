@@ -11,14 +11,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
-public class HelloServiceImplTest {
-    private HelloService helloService;
+public class RestServiceImplTest {
+    private RestService restService;
     private UserContextService userContextService;
 
     @Before
     public void setup() {
         userContextService = Mockito.mock(UserContextService.class);
-        helloService = new HelloServiceImpl(userContextService);
+        restService = new RestServiceImpl(userContextService);
     }
 
     @Test
@@ -26,7 +26,7 @@ public class HelloServiceImplTest {
         var expectedUserAttributes = new HashMap<String, List<String>>();
         Mockito.when(userContextService.getUserAttributes()).thenReturn(expectedUserAttributes);
 
-        var result = helloService.helloServiceBusinessLogic();
+        var result = restService.helloServiceBusinessLogic();
         assertNotNull(result);
         Assert.assertEquals(expectedUserAttributes, result.getUserContext());
     }

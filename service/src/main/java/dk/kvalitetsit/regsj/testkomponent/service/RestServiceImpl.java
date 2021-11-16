@@ -3,10 +3,10 @@ package dk.kvalitetsit.regsj.testkomponent.service;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutput;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 
-public class HelloServiceImpl implements HelloService {
+public class RestServiceImpl implements RestService {
     private final UserContextService userContextService;
 
-    public HelloServiceImpl(UserContextService userContextService) {
+    public RestServiceImpl(UserContextService userContextService) {
         this.userContextService = userContextService;
     }
 

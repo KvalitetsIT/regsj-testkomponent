@@ -3,7 +3,7 @@ package dk.kvalitetsit.regsj.testkomponent;
 import org.junit.Test;
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.ApiException;
-import org.openapitools.client.api.KithugsApi;
+import org.openapitools.client.api.TestKomponentApi;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -11,15 +11,14 @@ import javax.ws.rs.client.WebTarget;
 import static org.junit.Assert.*;
 
 public class TestkomponentIT extends AbstractIntegrationTest {
-
-    private final KithugsApi helloApi;
+    private final TestKomponentApi helloApi;
 
     public TestkomponentIT() {
         var apiClient = new ApiClient();
         apiClient.setBasePath(getApiBasePath());
         apiClient.addDefaultHeader("x-sessiondata", "ew0KICAgICJVc2VyQXR0cmlidXRlcyI6IHsNCiAgICAgICAgIlVzZXJSb2xlcyI6IFsNCiAgICAgICAgICAgICJwcm92aXNpb25lcnJvbGUiDQogICAgICAgIF0sDQogICAgICAgICJPcmdhbmlzYXRpb24iOiBbInNvbWVfb3JnIl0NCiAgICB9DQp9");
 
-        helloApi = new KithugsApi(apiClient);
+        helloApi = new TestKomponentApi(apiClient);
     }
 
     @Test

@@ -1,26 +1,25 @@
 package dk.kvalitetsit.regsj.testkomponent.controller;
 
-import dk.kvalitetsit.regsj.testkomponent.service.HelloService;
-import org.openapitools.api.KithugsApi;
+import dk.kvalitetsit.regsj.testkomponent.service.RestService;
+import org.openapitools.api.TestKomponentApi;
 import org.openapitools.model.Context;
 import org.openapitools.model.ContextResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class HelloController implements KithugsApi {
-    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
-    private final HelloService helloService;
+@org.springframework.web.bind.annotation.RestController
+public class RestController implements TestKomponentApi {
+    private static final Logger logger = LoggerFactory.getLogger(RestController.class);
+    private final RestService restService;
 
-    public HelloController(HelloService helloService) {
-        this.helloService = helloService;
+    public RestController(RestService restService) {
+        this.restService = restService;
     }
 
     @Override
     public ResponseEntity<ContextResponse> restV1ContextGet() {
-        var contextInformation = helloService.helloServiceBusinessLogic();
+        var contextInformation = restService.helloServiceBusinessLogic();
 
         var response = new ContextResponse();
 
