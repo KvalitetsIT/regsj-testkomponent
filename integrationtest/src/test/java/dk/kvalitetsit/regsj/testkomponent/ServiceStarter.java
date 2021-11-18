@@ -1,37 +1,52 @@
 package dk.kvalitetsit.regsj.testkomponent;
+import com.google.common.net.MediaType;
+import org.openapitools.model.Context;
+import java.util.ArrayList;
 
 import com.github.dockerjava.api.model.VolumesFrom;
+import org.mockserver.client.server.MockServerClient;
+import org.mockserver.matchers.Times;
+import org.mockserver.model.*;
+import org.openapitools.model.ContextResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.utility.DockerImageName;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 public class ServiceStarter {
     private static final Logger logger = LoggerFactory.getLogger(ServiceStarter.class);
     private static final Logger serviceLogger = LoggerFactory.getLogger("regsj-testkomponent");
     private static final Logger mysqlLogger = LoggerFactory.getLogger("mysql");
+    private static final Logger mockServerLogger = LoggerFactory.getLogger("remoteServer");
 
     private Network dockerNetwork;
     private String jdbcUrl;
+    private Integer remoteServerMappedPort;
 
     public void startServices() {
         dockerNetwork = Network.newNetwork();
 
 //        setupDatabaseContainer();
-
+        startRemoteCallMockServer();
         // Do not cache thymeleaf templates when running from IDE.
         System.setProperty("spring.thymeleaf.cache", "false");
 
         System.setProperty("CONFIGURABLE_TEXT", "En tekst");
         System.setProperty("ENVIRONMENT", "DEV");
         System.setProperty("usercontext.header.name", "x-sessiondata");
+        System.setProperty("userattributes.org.key", "Organisation");
+        System.setProperty("REMOTE_ENDPOINT", "http://localhost:" + remoteServerMappedPort);
+        System.setProperty("DO_SERVICE_CALL", "true");
 //        System.setProperty("JDBC.URL", jdbcUrl);
 //        System.setProperty("JDBC.USER", "hellouser");
 //        System.setProperty("JDBC.PASS", "secret1234");
@@ -43,6 +58,7 @@ public class ServiceStarter {
         dockerNetwork = Network.newNetwork();
 
         setupDatabaseContainer();
+        startRemoteCallMockServer();
 
         var resourcesContainerName = "regsj-testkomponent-resources";
         var resourcesRunning = containerRunning(resourcesContainerName);
@@ -75,7 +91,13 @@ public class ServiceStarter {
 
                 .withEnv("CONFIGURABLE_TEXT", "En tekst")
                 .withEnv("ENVIRONMENT", "DEV")
+
+                .withEnv("REMOTE_ENDPOINT", "http://remoteServer:1080")
+
+                .withEnv("DO_SERVICE_CALL", "true")
+
                 .withEnv("usercontext.header.name", "x-sessiondata")
+                .withEnv("userattributes.org.key", "Organisation")
 
 //                .withEnv("JVM_OPTS", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000")
 
@@ -85,6 +107,34 @@ public class ServiceStarter {
         attachLogger(serviceLogger, service);
 
         return service;
+    }
+
+    private MockServerContainer startRemoteCallMockServer() {
+        MockServerContainer remoteCallService = new MockServerContainer(DockerImageName.parse("jamesdbloom/mockserver:mockserver-5.11.2"))
+                .withNetworkAliases("remoteServer")
+                .withNetwork(dockerNetwork);
+        remoteCallService.start();
+        attachLogger(mockServerLogger, remoteCallService);
+
+        remoteServerMappedPort = remoteCallService.getServerPort();
+
+        MockServerClient mockServerClient = new MockServerClient(remoteCallService.getContainerIpAddress(), remoteCallService.getMappedPort(1080));
+        mockServerClient.when(HttpRequest.request().withMethod("GET"), Times.unlimited()).respond(getRemoteResponse());
+
+        return remoteCallService;
+    }
+
+    private HttpResponse getRemoteResponse() {
+        var content = new ContextResponse();
+        content.setContext(new ArrayList<>());
+        Context context1 = new Context();
+        context1.setAttributeName("k1");
+        context1.setAttributeValue(Arrays.asList("v1", "v2"));
+        content.getContext().add(context1);
+
+        var responseBodyWithContentType = JsonBody.json(content);
+
+        return new HttpResponse().withBody(responseBodyWithContentType).withHeader("Content-Type", "application/json");
     }
 
     private boolean containerRunning(String containerName) {

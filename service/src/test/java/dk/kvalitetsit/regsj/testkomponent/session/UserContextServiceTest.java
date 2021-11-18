@@ -17,7 +17,7 @@ public class UserContextServiceTest {
     @Before
     public void setup() {
         request = Mockito.mock(HttpServletRequest.class);
-        userContextService = new UserContextServiceImpl(request, headerName);
+        userContextService = new UserContextServiceImpl(request, headerName, orgKey);
     }
 
     @Test(expected = RuntimeException.class)
@@ -40,6 +40,14 @@ public class UserContextServiceTest {
         Mockito.when(request.getHeader(headerName)).thenReturn(input);
 
         assertTrue(userContextService.isPresentAndValid());
+    }
+
+    @Test
+    public void testGetOrganisation() {
+        var input = "ew0KICAgICJVc2VyQXR0cmlidXRlcyI6IHsNCiAgICAgICAgIlVzZXJSb2xlcyI6IFsNCiAgICAgICAgICAgICJwcm92aXNpb25lcnJvbGUiDQogICAgICAgIF0sDQogICAgICAgICJPcmdhbmlzYXRpb24iOiBbInNvbWVfb3JnIl0NCiAgICB9DQp9";
+        Mockito.when(request.getHeader(headerName)).thenReturn(input);
+
+        assertEquals("some_org", userContextService.getOrganisation());
     }
 
     @Test

@@ -12,11 +12,13 @@ public class UserContextServiceImpl implements UserContextService {
     private final Logger logger = LoggerFactory.getLogger(UserContextServiceImpl.class);
     private final HttpServletRequest request;
     private final String userContextHeaderName;
+    private final String userAttributeOrganisationKey;
     private SessionData sessionData;
 
-    public UserContextServiceImpl(HttpServletRequest request, String userContextHeaderName) {
+    public UserContextServiceImpl(HttpServletRequest request, String userContextHeaderName, String userAttributeOrganisationKey) {
         this.request = request;
         this.userContextHeaderName = userContextHeaderName;
+        this.userAttributeOrganisationKey = userAttributeOrganisationKey;
     }
 
     @Override
@@ -28,6 +30,15 @@ public class UserContextServiceImpl implements UserContextService {
     @Override
     public boolean isPresentAndValid() {
         return readOptionalSessionData().isPresent();
+    }
+
+    public String getOrganisation() {
+        SessionData sessionData = readSessionData();
+        if (sessionData.getUserAttributes().containsKey(userAttributeOrganisationKey)) {
+            return sessionData.getUserAttribute(userAttributeOrganisationKey);
+        }
+
+        return null;
     }
 
     private Optional<SessionData> readOptionalSessionData() {

@@ -7,4 +7,6 @@ public interface UserContextService {
     Map<String, List<String>> getUserAttributes();
 
     boolean isPresentAndValid();
+
+    String getOrganisation();
 }

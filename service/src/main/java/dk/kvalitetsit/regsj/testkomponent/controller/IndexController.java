@@ -35,6 +35,7 @@ public class IndexController {
         modelAndView.addObject("configurableText", info.getConfigurableText());
         modelAndView.addObject("environment", info.getEnvironment());
         modelAndView.addObject("userContext", info.getUserContextInformation());
+        info.getServiceCallResponse().ifPresent(x -> modelAndView.addObject("remoteResponse", x.getContext()));
 
         return modelAndView;
     }

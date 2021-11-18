@@ -2,6 +2,7 @@ package dk.kvalitetsit.regsj.testkomponent.service.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class HtmlInfo {
     private String version;
@@ -9,6 +10,7 @@ public class HtmlInfo {
     private String configurableText;
     private String environment;
     private Map<String, List<String>> userContextInformation;
+    private ServiceCallResponse serviceCallResponse;
 
     public String getVersion() {
         return version;
@@ -48,5 +50,13 @@ public class HtmlInfo {
 
     public Map<String, List<String>> getUserContextInformation() {
         return userContextInformation;
+    }
+
+    public Optional<ServiceCallResponse> getServiceCallResponse() {
+        return Optional.ofNullable(serviceCallResponse);
+    }
+
+    public void setServiceCallResponse(ServiceCallResponse serviceCallResponse) {
+        this.serviceCallResponse = serviceCallResponse;
     }
 }

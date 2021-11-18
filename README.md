@@ -46,3 +46,6 @@ Health URL that can be used for readiness probe: `http://localhost:8081/actuator
 | LOG_LEVEL_FRAMEWORK | Log level for framework. Defaults to INFO. | No |
 | CORRELATION_ID | HTTP header to take correlation id from. Used to correlate log messages. Defaults to "x-request-id". | No
 | usercontext.header.name | Header name for user context. | Yes |
+| userattributes.org.key | Key in user context for organisation. | Yes |
+| DO_SERVICE_CALL | Do the actual remote service call. | Yes |
+| REMOTE_ENDPOINT | Endpoint for remote call. | Yes |

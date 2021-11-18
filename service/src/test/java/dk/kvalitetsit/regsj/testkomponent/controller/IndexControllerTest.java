@@ -2,6 +2,7 @@ package dk.kvalitetsit.regsj.testkomponent.controller;
 
 import dk.kvalitetsit.regsj.testkomponent.service.HtmlService;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HtmlInfo;
+import dk.kvalitetsit.regsj.testkomponent.service.model.ServiceCallResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,6 +32,7 @@ public class IndexControllerTest {
         var expectedText = "some_text";
         var expectedEnvironment = "dev";
         var expectedUserContext = new HashMap<String, List<String>>();
+        var expectedRemoteResponse = new HashMap<String, String>();
 
         Mockito.when(htmlService.getHtmlInfo()).then(a -> {
             var output = new HtmlInfo();
@@ -39,6 +41,10 @@ public class IndexControllerTest {
             output.setEnvironment(expectedEnvironment);
             output.setVersion(expectedVersion);
             output.setUserContextInformation(expectedUserContext);
+
+            var serviceCallResponse = new ServiceCallResponse();
+            serviceCallResponse.setContext(expectedRemoteResponse);
+            output.setServiceCallResponse(serviceCallResponse);
 
             return output;
         });
@@ -52,5 +58,6 @@ public class IndexControllerTest {
         assertEquals(expectedHostName, result.getModel().get("hostname"));
         assertEquals(expectedText, result.getModel().get("configurableText"));
         assertEquals(expectedUserContext, result.getModel().get("userContext"));
+        assertEquals(expectedRemoteResponse, result.getModel().get("remoteResponse"));
     }
 }

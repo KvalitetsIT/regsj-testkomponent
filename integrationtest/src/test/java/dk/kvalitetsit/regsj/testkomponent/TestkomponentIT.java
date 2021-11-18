@@ -35,7 +35,7 @@ public class TestkomponentIT extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testCallRestServiceNoSession() throws ApiException {
+    public void testCallRestServiceNoSession() {
         var apiClient = new ApiClient();
         apiClient.setBasePath(getApiBasePath());
 

@@ -29,6 +29,27 @@
                 </tr>
             </tbody>
         </table>
+
+        <h2>Service kald</h2>
+        <div th:if="${remoteResponse != null}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Attribut</th>
+                    <th>Værdier</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="context : ${remoteResponse}">
+                    <td th:text="${context.key}" />
+                    <td th:text="${context.value}" />
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:unless="${remoteResponse != null}">
+            Service kald er slået fra.
+        </div>
     </div>
 </body>
 </html>
