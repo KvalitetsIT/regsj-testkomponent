@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.List;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
-public class HelloControllerTest {
+public class RestControllerTest {
     private RestController helloController;
     private RestService restService;
 
@@ -26,25 +27,22 @@ public class HelloControllerTest {
     }
 
     @Test
-    public void testCallController() {
+    public void testCallController() throws UnknownHostException {
         var expectedContext = new HashMap<String, List<String>>();
         expectedContext.put("a1", Arrays.asList("v1", "v2"));
         expectedContext.put("a2", Collections.singletonList("v1"));
 
         Mockito.when(restService.helloServiceBusinessLogic()).then(a -> {
             HelloServiceOutput output = new HelloServiceOutput();
-            output.setUserContext(expectedContext);
+            output.setVersion("1.0.0");
+            output.setHostName("localhost");
             return output;
         });
 
-        var result = helloController.restV1ContextGet();
+        var result = helloController.restV1HelloGet();
 
         assertNotNull(result);
-        assertEquals(2, result.getBody().getContext().size());
-        assertEquals("a1", result.getBody().getContext().get(0).getAttributeName());
-        assertEquals("[v1, v2]", result.getBody().getContext().get(0).getAttributeValue().toString());
-
-        assertEquals("a2", result.getBody().getContext().get(1).getAttributeName());
-        assertEquals("[v1]", result.getBody().getContext().get(1).getAttributeValue().toString());
+        assertEquals("localhost", result.getBody().getHostname());
+        assertEquals("1.0.0", result.getBody().getVersion());
     }
 }

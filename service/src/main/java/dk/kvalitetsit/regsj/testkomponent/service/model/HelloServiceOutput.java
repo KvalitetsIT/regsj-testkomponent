@@ -4,13 +4,22 @@ import java.util.List;
 import java.util.Map;
 
 public class HelloServiceOutput {
-    private Map<String, List<String>> userContext;
+    private String hostName;
+    private String version;
 
-    public Map<String, List<String>> getUserContext() {
-        return userContext;
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
 
-    public void setUserContext(Map<String, List<String>> userContext) {
-        this.userContext = userContext;
+    public String getHostName() {
+        return hostName;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }

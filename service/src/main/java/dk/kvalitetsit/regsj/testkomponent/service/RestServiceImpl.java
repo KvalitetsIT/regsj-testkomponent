@@ -1,19 +1,23 @@
 package dk.kvalitetsit.regsj.testkomponent.service;
 
+import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutput;
-import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
+
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 
 public class RestServiceImpl implements RestService {
-    private final UserContextService userContextService;
+    private final VersionProvider versionProvider;
 
-    public RestServiceImpl(UserContextService userContextService) {
-        this.userContextService = userContextService;
+    public RestServiceImpl(VersionProvider versionProvider) {
+        this.versionProvider = versionProvider;
     }
 
     @Override
-    public HelloServiceOutput helloServiceBusinessLogic() {
+    public HelloServiceOutput helloServiceBusinessLogic() throws UnknownHostException {
         var helloServiceOutput = new HelloServiceOutput();
-        helloServiceOutput.setUserContext(userContextService.getUserAttributes());
+        helloServiceOutput.setVersion(versionProvider.getVersion());
+        helloServiceOutput.setHostName(Inet4Address.getLocalHost().getHostName());
 
         return helloServiceOutput;
     }

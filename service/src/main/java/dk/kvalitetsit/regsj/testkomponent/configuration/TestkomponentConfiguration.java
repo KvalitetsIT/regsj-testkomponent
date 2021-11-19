@@ -51,8 +51,8 @@ public class TestkomponentConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public RestService helloService(UserContextService userContextService) {
-        return new RestServiceImpl(userContextService);
+    public RestService helloService(VersionProvider versionProvider) {
+        return new RestServiceImpl(versionProvider);
     }
 
     @Bean

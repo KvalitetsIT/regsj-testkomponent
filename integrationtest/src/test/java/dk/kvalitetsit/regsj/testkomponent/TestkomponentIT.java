@@ -24,30 +24,11 @@ public class TestkomponentIT extends AbstractIntegrationTest {
 
     @Test
     public void testCallRestService() throws ApiException {
-        var result = helloApi.restV1ContextGet();
+        var result = helloApi.restV1HelloGet();
 
         assertNotNull(result);
-        assertEquals("UserRoles", result.getContext().get(0).getAttributeName());
-        assertEquals("[provisionerrole]", result.getContext().get(0).getAttributeValue().toString());
-
-        assertEquals("Organisation", result.getContext().get(1).getAttributeName());
-        assertEquals("[some_org]", result.getContext().get(1).getAttributeValue().toString());
-    }
-
-    @Test
-    public void testCallRestServiceNoSession() {
-        var apiClient = new ApiClient();
-        apiClient.setBasePath(getApiBasePath());
-
-        var helloApi = new TestKomponentApi(apiClient);
-
-        try {
-            helloApi.restV1ContextGetWithHttpInfo();
-            fail();
-        }
-        catch(ApiException e) {
-            assertEquals(403, e.getCode());
-        }
+        assertNotNull(result.getVersion());
+        assertNotNull(result.getHostname());
     }
 
     @Test

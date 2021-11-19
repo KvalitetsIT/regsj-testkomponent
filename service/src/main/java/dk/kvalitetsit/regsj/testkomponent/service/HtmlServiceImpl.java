@@ -62,10 +62,9 @@ public class HtmlServiceImpl implements HtmlService {
             var testkomponentResponse = testkomponentClient.callTestClient();
 
             var serviceCallResponse = new ServiceCallResponse();
-            serviceCallResponse.setContext(new HashMap<>());
+            serviceCallResponse.setHostname(testkomponentResponse.getHostname());
+            serviceCallResponse.setVersion(testkomponentResponse.getVersion());
             htmlInfo.setServiceCallResponse(serviceCallResponse);
-
-            testkomponentResponse.getContext().forEach( context -> serviceCallResponse.getContext().put(context.getAttributeName(), String.join(", ", context.getAttributeValue())));
         }
 
         updateLastAccess();

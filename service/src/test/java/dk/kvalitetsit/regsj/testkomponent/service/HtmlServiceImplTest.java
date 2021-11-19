@@ -3,8 +3,7 @@ package dk.kvalitetsit.regsj.testkomponent.service;
 import dk.kvalitetsit.regsj.testkomponent.dao.LastAccessedDao;
 import dk.kvalitetsit.regsj.testkomponent.dao.entity.LastAccessed;
 import dk.kvalitetsit.regsj.testkomponent.remote.TestkomponentClient;
-import dk.kvalitetsit.regsj.testkomponent.remote.model.Context;
-import dk.kvalitetsit.regsj.testkomponent.remote.model.ContextResponse;
+import dk.kvalitetsit.regsj.testkomponent.remote.model.HelloResponse;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
 import org.junit.Before;
@@ -54,18 +53,11 @@ public class HtmlServiceImplTest {
         });
 
         Mockito.when(testkomponentClient.callTestClient()).then(x -> {
-            var firstContext = new Context();
-            firstContext.setAttributeName("k1");
-            firstContext.setAttributeValue(Arrays.asList("v1", "v2"));
+            var helloResponse = new HelloResponse();
+            helloResponse.setVersion("1.0.0");
+            helloResponse.setHostname("localhost");
 
-            var secondContext = new Context();
-            secondContext.setAttributeName("k2");
-            secondContext.setAttributeValue(Collections.singletonList("v3"));
-
-            var contextResponse = new ContextResponse();
-            contextResponse.setContext(Arrays.asList(firstContext, secondContext));
-
-            return contextResponse;
+            return helloResponse;
         });
 
         Mockito.when(userContextService.getUserAttributes()).then(x -> {
@@ -90,9 +82,8 @@ public class HtmlServiceImplTest {
 
         assertTrue(result.getServiceCallResponse().isPresent());
         var serviceCalLResponse = result.getServiceCallResponse().get();
-        assertEquals(2, serviceCalLResponse.getContext().size());
-        assertEquals("v1, v2", serviceCalLResponse.getContext().get("k1"));
-        assertEquals("v3", serviceCalLResponse.getContext().get("k2"));
+        assertEquals("1.0.0", serviceCalLResponse.getVersion());
+        assertEquals("localhost", serviceCalLResponse.getHostname());
 
         Mockito.verify(lastAccessedDao, times(1)).getLatest();
         Mockito.verify(lastAccessedDao, times(1)).insert(Mockito.any(LastAccessed.class));

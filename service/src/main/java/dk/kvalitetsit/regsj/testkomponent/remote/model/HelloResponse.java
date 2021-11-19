@@ -1,8 +1,8 @@
-package dk.kvalitetsit.regsj.testkomponent.service.model;
+package dk.kvalitetsit.regsj.testkomponent.remote.model;
 
-public class ServiceCallResponse {
-    private String hostname;
+public class HelloResponse {
     private String version;
+    private String hostname;
 
     public String getHostname() {
         return hostname;

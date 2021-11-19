@@ -1,7 +1,7 @@
 package dk.kvalitetsit.regsj.testkomponent.remote;
 
 import dk.kvalitetsit.logging.RequestIdGenerator;
-import dk.kvalitetsit.regsj.testkomponent.remote.model.ContextResponse;
+import dk.kvalitetsit.regsj.testkomponent.remote.model.HelloResponse;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +28,7 @@ public class TestkomponentClientImpl implements TestkomponentClient {
     }
 
     @Override
-    public ContextResponse callTestClient() {
+    public HelloResponse callTestClient() {
         var headers = new HttpHeaders();
         headers.put(REQUEST_ID_HEADER, Collections.singletonList(requestIdGenerator.getOrGenerateRequestId()));
         headers.put(CLAIM_HEADER, Collections.singletonList(createClaimHeader(userContextService.getOrganisation())));
@@ -36,7 +36,7 @@ public class TestkomponentClientImpl implements TestkomponentClient {
         final HttpEntity<String> entity = new HttpEntity<>(headers);
 
         var response = template
-                .exchange(endpoint, HttpMethod.GET, entity, ContextResponse.class);
+                .exchange(endpoint, HttpMethod.GET, entity, HelloResponse.class);
 
         return response.getBody();
     }

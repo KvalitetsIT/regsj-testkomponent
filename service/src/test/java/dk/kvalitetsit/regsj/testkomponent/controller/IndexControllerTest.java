@@ -32,7 +32,8 @@ public class IndexControllerTest {
         var expectedText = "some_text";
         var expectedEnvironment = "dev";
         var expectedUserContext = new HashMap<String, List<String>>();
-        var expectedRemoteResponse = new HashMap<String, String>();
+        var expectedRemoteVersion = "1.0.0";
+        var expectedRemoteHostname = "localhost";
 
         Mockito.when(htmlService.getHtmlInfo()).then(a -> {
             var output = new HtmlInfo();
@@ -43,7 +44,8 @@ public class IndexControllerTest {
             output.setUserContextInformation(expectedUserContext);
 
             var serviceCallResponse = new ServiceCallResponse();
-            serviceCallResponse.setContext(expectedRemoteResponse);
+            serviceCallResponse.setHostname(expectedRemoteHostname);
+            serviceCallResponse.setVersion(expectedRemoteVersion);
             output.setServiceCallResponse(serviceCallResponse);
 
             return output;
@@ -58,6 +60,7 @@ public class IndexControllerTest {
         assertEquals(expectedHostName, result.getModel().get("hostname"));
         assertEquals(expectedText, result.getModel().get("configurableText"));
         assertEquals(expectedUserContext, result.getModel().get("userContext"));
-        assertEquals(expectedRemoteResponse, result.getModel().get("remoteResponse"));
+        assertEquals(expectedRemoteHostname, result.getModel().get("remoteHostname"));
+        assertEquals(expectedRemoteVersion, result.getModel().get("remoteVersion"));
     }
 }

@@ -34,23 +34,27 @@
         <div th:if="${lastAccess != null}" th:text="${lastAccess}" />
 
         <h2>Service kald</h2>
-        <div th:if="${remoteResponse != null}">
+        <div th:if="${remoteVersion != null}">
             <table>
                 <thead>
                 <tr>
-                    <th>Attribut</th>
-                    <th>Værdier</th>
+                    <th>Beskrivelse</th>
+                    <th>Værdi</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="context : ${remoteResponse}">
-                    <td th:text="${context.key}" />
-                    <td th:text="${context.value}" />
+                <tr>
+                    <td>Remote version: </td>
+                    <td th:text="${remoteVersion}" />
+                </tr>
+                <tr>
+                    <td>Remote hostname: </td>
+                    <td th:text="${remoteHostname}" />
                 </tr>
                 </tbody>
             </table>
         </div>
-        <div th:unless="${remoteResponse != null}">
+        <div th:unless="${remoteVersion != null}">
             Service kald er slået fra.
         </div>
         <h2>Logud</h2>

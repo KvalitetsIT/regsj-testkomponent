@@ -36,7 +36,11 @@ public class IndexController {
         modelAndView.addObject("environment", info.getEnvironment());
         modelAndView.addObject("userContext", info.getUserContextInformation());
 
-        info.getServiceCallResponse().ifPresent(x -> modelAndView.addObject("remoteResponse", x.getContext()));
+        info.getServiceCallResponse().ifPresent(x -> {
+            modelAndView.addObject("remoteVersion", x.getVersion());
+            modelAndView.addObject("remoteHostname", x.getHostname());
+        });
+
         info.getLastAccess().ifPresent(x -> modelAndView.addObject("lastAccess", x));
 
         return modelAndView;

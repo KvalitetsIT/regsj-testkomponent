@@ -6,8 +6,7 @@ import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.JsonBody;
-import org.openapitools.model.Context;
-import org.openapitools.model.ContextResponse;
+import org.openapitools.model.HelloResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -130,12 +129,10 @@ public class ServiceStarter {
     }
 
     private HttpResponse getRemoteResponse() {
-        var content = new ContextResponse();
-        content.setContext(new ArrayList<>());
-        Context context1 = new Context();
-        context1.setAttributeName("k1");
-        context1.setAttributeValue(Arrays.asList("v1", "v2"));
-        content.getContext().add(context1);
+
+        var content = new HelloResponse();
+        content.setHostname("localhost");
+        content.setVersion("1.0.0");
 
         var responseBodyWithContentType = JsonBody.json(content);
 

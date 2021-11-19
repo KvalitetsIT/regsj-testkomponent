@@ -1,33 +1,36 @@
 package dk.kvalitetsit.regsj.testkomponent.service;
 
-import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
+import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class RestServiceImplTest {
     private RestService restService;
-    private UserContextService userContextService;
+    private VersionProvider versionProvider;
 
     @Before
     public void setup() {
-        userContextService = Mockito.mock(UserContextService.class);
-        restService = new RestServiceImpl(userContextService);
+        versionProvider = Mockito.mock(VersionProvider.class);
+        restService = new RestServiceImpl(versionProvider);
     }
 
     @Test
-    public void testValidInput() {
+    public void testValidInput() throws UnknownHostException {
         var expectedUserAttributes = new HashMap<String, List<String>>();
-        Mockito.when(userContextService.getUserAttributes()).thenReturn(expectedUserAttributes);
+        Mockito.when(versionProvider.getVersion()).thenReturn("1.0.0");
 
         var result = restService.helloServiceBusinessLogic();
         assertNotNull(result);
-        Assert.assertEquals(expectedUserAttributes, result.getUserContext());
+        assertEquals("1.0.0", result.getVersion());
+        assertNotNull(result.getHostName());
     }
 }
