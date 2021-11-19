@@ -1,6 +1,7 @@
 package dk.kvalitetsit.regsj.testkomponent.remote;
 
 import dk.kvalitetsit.logging.RequestIdGenerator;
+import dk.kvalitetsit.regsj.testkomponent.remote.model.ContextResponse;
 import dk.kvalitetsit.regsj.testkomponent.remote.model.HelloResponse;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import org.springframework.http.HttpEntity;
@@ -15,14 +16,16 @@ public class TestkomponentClientImpl implements TestkomponentClient {
     private final RestTemplate template;
     private final String endpoint;
     private final UserContextService userContextService;
+    private final String endpointProtected;
     private final RequestIdGenerator requestIdGenerator;
     private static final String CLAIM_HEADER = "X-Claims";
     private static final String REQUEST_ID_HEADER = "x-request-id";
 
-    public TestkomponentClientImpl(String endpoint, RequestIdGenerator requestIdGenerator, UserContextService userContextService) {
+    public TestkomponentClientImpl(String endpoint, RequestIdGenerator requestIdGenerator, UserContextService userContextService, String endpointProtected) {
         this.requestIdGenerator = requestIdGenerator;
         this.endpoint = endpoint;
         this.userContextService = userContextService;
+        this.endpointProtected = endpointProtected;
 
         template = new RestTemplate();
     }
@@ -37,6 +40,21 @@ public class TestkomponentClientImpl implements TestkomponentClient {
 
         var response = template
                 .exchange(endpoint, HttpMethod.GET, entity, HelloResponse.class);
+
+        return response.getBody();
+    }
+
+
+    @Override
+    public ContextResponse callTestClientProtected() {
+        var headers = new HttpHeaders();
+        headers.put(REQUEST_ID_HEADER, Collections.singletonList(requestIdGenerator.getOrGenerateRequestId()));
+        headers.put(CLAIM_HEADER, Collections.singletonList(createClaimHeader(userContextService.getOrganisation())));
+
+        final HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var response = template
+                .exchange(endpointProtected, HttpMethod.GET, entity, ContextResponse.class);
 
         return response.getBody();
     }

@@ -40,7 +40,7 @@ public class IndexController {
             modelAndView.addObject("remoteVersion", x.getVersion());
             modelAndView.addObject("remoteHostname", x.getHostname());
         });
-
+        info.getServiceCallResponse().ifPresent(x -> modelAndView.addObject("remoteResponse", x.getContext()));
         info.getLastAccess().ifPresent(x -> modelAndView.addObject("lastAccess", x));
 
         return modelAndView;

@@ -49,3 +49,4 @@ Health URL that can be used for readiness probe: `http://localhost:8081/actuator
 | userattributes.org.key | Key in user context for organisation. | Yes |
 | DO_SERVICE_CALL | Do the actual remote service call. | Yes |
 | REMOTE_ENDPOINT | Endpoint for remote call. | Yes |
+| REMOTE_ENDPOINT_PROTECTED | End point for protected remote call. | Yes | 

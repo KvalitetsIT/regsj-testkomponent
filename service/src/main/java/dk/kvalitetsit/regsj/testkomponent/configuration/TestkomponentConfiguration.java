@@ -39,9 +39,12 @@ public class TestkomponentConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public TestkomponentClient testkomponentClient(@Value("${REMOTE_ENDPOINT}") String remoteEndpoint, RequestIdGenerator requestIdGenerator, UserContextService userContextService) {
+    public TestkomponentClient testkomponentClient(@Value("${REMOTE_ENDPOINT}") String remoteEndpoint,
+                                                   RequestIdGenerator requestIdGenerator,
+                                                   UserContextService userContextService,
+                                                   @Value("${REMOTE_ENDPOINT_PROTECTED}") String remoteEndpointProtected) {
         logger.info("Configuring TestkomponentClient with remote url {}.", remoteEndpoint);
-        return new TestkomponentClientImpl(remoteEndpoint, requestIdGenerator, userContextService);
+        return new TestkomponentClientImpl(remoteEndpoint, requestIdGenerator, userContextService, remoteEndpointProtected);
     }
 
     @Bean
@@ -51,8 +54,8 @@ public class TestkomponentConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public RestService helloService(VersionProvider versionProvider) {
-        return new RestServiceImpl(versionProvider);
+    public RestService helloService(VersionProvider versionProvider, UserContextService userContextService) {
+        return new RestServiceImpl(versionProvider, userContextService);
     }
 
     @Bean

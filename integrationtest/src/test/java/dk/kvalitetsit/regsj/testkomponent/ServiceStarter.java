@@ -6,6 +6,8 @@ import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.JsonBody;
+import org.openapitools.model.Context;
+import org.openapitools.model.ContextResponse;
 import org.openapitools.model.HelloResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +51,8 @@ public class ServiceStarter {
         System.setProperty("ENVIRONMENT", "DEV");
         System.setProperty("usercontext.header.name", "x-sessiondata");
         System.setProperty("userattributes.org.key", "Organisation");
-        System.setProperty("REMOTE_ENDPOINT", "http://localhost:" + remoteServerMappedPort);
+        System.setProperty("REMOTE_ENDPOINT", "http://localhost:" + remoteServerMappedPort + "/unprotected");
+        System.setProperty("REMOTE_ENDPOINT_PROTECTED", "http://localhost:" + remoteServerMappedPort + "/protected");
         System.setProperty("DO_SERVICE_CALL", "true");
         System.setProperty("JDBC.URL", jdbcUrl);
         System.setProperty("JDBC.USER", DB_USER);
@@ -123,13 +126,13 @@ public class ServiceStarter {
         remoteServerMappedPort = remoteCallService.getServerPort();
 
         MockServerClient mockServerClient = new MockServerClient(remoteCallService.getContainerIpAddress(), remoteCallService.getMappedPort(1080));
-        mockServerClient.when(HttpRequest.request().withMethod("GET"), Times.unlimited()).respond(getRemoteResponse());
+        mockServerClient.when(HttpRequest.request().withMethod("GET").withPath("/unprotected"), Times.unlimited()).respond(getRemoteResponse());
+        mockServerClient.when(HttpRequest.request().withMethod("GET").withPath("/protected"), Times.unlimited()).respond(getRemoteResponseProtected());
 
         return remoteCallService;
     }
 
     private HttpResponse getRemoteResponse() {
-
         var content = new HelloResponse();
         content.setHostname("localhost");
         content.setVersion("1.0.0");
@@ -138,6 +141,20 @@ public class ServiceStarter {
 
         return new HttpResponse().withBody(responseBodyWithContentType).withHeader("Content-Type", "application/json");
     }
+
+    private HttpResponse getRemoteResponseProtected() {
+        var content = new ContextResponse();
+        content.setContext(new ArrayList<>());
+        Context context1 = new Context();
+        context1.setAttributeName("k1");
+        context1.setAttributeValue(Arrays.asList("v1", "v2"));
+        content.getContext().add(context1);
+
+        var responseBodyWithContentType = JsonBody.json(content);
+
+        return new HttpResponse().withBody(responseBodyWithContentType).withHeader("Content-Type", "application/json");
+    }
+
 
     private boolean containerRunning(String containerName) {
         return DockerClientFactory

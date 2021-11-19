@@ -2,6 +2,7 @@ package dk.kvalitetsit.regsj.testkomponent.controller;
 
 import dk.kvalitetsit.regsj.testkomponent.service.RestService;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutput;
+import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutputProtected;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -44,5 +45,28 @@ public class RestControllerTest {
         assertNotNull(result);
         assertEquals("localhost", result.getBody().getHostname());
         assertEquals("1.0.0", result.getBody().getVersion());
+    }
+
+    @Test
+    public void testCallControllerContext() {
+        var expectedContext = new HashMap<String, List<String>>();
+        expectedContext.put("a1", Arrays.asList("v1", "v2"));
+        expectedContext.put("a2", Collections.singletonList("v1"));
+
+        Mockito.when(restService.helloServiceBusinessLogicProtected()).then(a -> {
+            var output = new HelloServiceOutputProtected();
+            output.setUserContext(expectedContext);
+            return output;
+        });
+
+        var result = helloController.restV1ContextGet();
+
+        assertNotNull(result);
+        assertEquals(2, result.getBody().getContext().size());
+        assertEquals("a1", result.getBody().getContext().get(0).getAttributeName());
+        assertEquals("[v1, v2]", result.getBody().getContext().get(0).getAttributeValue().toString());
+
+        assertEquals("a2", result.getBody().getContext().get(1).getAttributeName());
+        assertEquals("[v1]", result.getBody().getContext().get(1).getAttributeValue().toString());
     }
 }

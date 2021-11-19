@@ -1,6 +1,7 @@
 package dk.kvalitetsit.regsj.testkomponent.service;
 
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
+import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +17,13 @@ import static org.junit.Assert.assertNotNull;
 public class RestServiceImplTest {
     private RestService restService;
     private VersionProvider versionProvider;
+    private UserContextService userContextService;
 
     @Before
     public void setup() {
         versionProvider = Mockito.mock(VersionProvider.class);
-        restService = new RestServiceImpl(versionProvider);
+        userContextService = Mockito.mock(UserContextService.class);
+        restService = new RestServiceImpl(versionProvider, userContextService);
     }
 
     @Test
@@ -32,5 +35,15 @@ public class RestServiceImplTest {
         assertNotNull(result);
         assertEquals("1.0.0", result.getVersion());
         assertNotNull(result.getHostName());
+    }
+
+    @Test
+    public void testValidInputProtected() {
+        var expectedUserAttributes = new HashMap<String, List<String>>();
+        Mockito.when(userContextService.getUserAttributes()).thenReturn(expectedUserAttributes);
+
+        var result = restService.helloServiceBusinessLogicProtected();
+        assertNotNull(result);
+        Assert.assertEquals(expectedUserAttributes, result.getUserContext());
     }
 }

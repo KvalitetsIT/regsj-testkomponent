@@ -42,6 +42,21 @@ paths:
         '403':
           description: Unauthorized
 
+  /rest/v1/context:
+    get:
+      tags:
+        - TestKomponent
+      summary: Show user context
+      description: Return user context.
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contextResponse'
+        '403':
+          description: Unauthorized
 components:
   responses:
     '400':
@@ -63,3 +78,29 @@ components:
         hostname:
           type: string
           description: Hostname
+
+    contextResponse:
+      type: object
+      required:
+        - context
+      properties:
+        context:
+          type: array
+          items:
+            $ref: '#/components/schemas/context'
+          description: The context received in the call.
+
+    context:
+      type: object
+      required:
+        - attributeName
+        - attributeValue
+      properties:
+        attributeName:
+          description: The context attribute name.
+          type: string
+        attributeValue:
+          description: The context attribute value.
+          type: array
+          items:
+            type: string
