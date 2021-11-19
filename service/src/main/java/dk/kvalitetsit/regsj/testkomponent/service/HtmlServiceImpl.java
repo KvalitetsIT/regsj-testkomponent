@@ -61,8 +61,7 @@ public class HtmlServiceImpl implements HtmlService {
         htmlInfo.setConfigurableText(configurableText);
         htmlInfo.setEnvironment(environment);
         htmlInfo.setUserContextInformation(new HashMap<>());
-        userContextService.getUserAttributes().forEach((k,v) -> htmlInfo.getUserContextInformation().put(k.replace(',', '_'), v));
-        htmlInfo.setUserContextInformation(userContextService.getUserAttributes());
+        userContextService.getUserAttributes().forEach((k,v) -> htmlInfo.getUserContextInformation().put(k.replace('.', '_'), v));
         lastAccessed.ifPresent(x -> htmlInfo.setLastAccess(x.getAccessTime()));
 
         if(doServiceCall) {

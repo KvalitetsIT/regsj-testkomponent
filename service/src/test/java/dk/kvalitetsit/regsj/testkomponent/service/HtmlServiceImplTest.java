@@ -84,7 +84,7 @@ public class HtmlServiceImplTest {
         Mockito.when(userContextService.getUserAttributes()).then(x -> {
            var context = new HashMap<String, List<String>>();
            context.put("roles", Arrays.asList("rolle1", "rolle2"));
-           context.put("organisation", Collections.singletonList("some_org"));
+           context.put("organisation.punktum", Collections.singletonList("some_org"));
 
            return context;
         });
@@ -97,7 +97,7 @@ public class HtmlServiceImplTest {
         assertEquals(version, result.getVersion());
         assertNotNull(result.getHostName());
         assertEquals(2, result.getUserContextInformation().size());
-        assertEquals("[some_org]", result.getUserContextInformation().get("organisation").toString());
+        assertEquals("[some_org]", result.getUserContextInformation().get("organisation_punktum").toString());
         assertEquals("[rolle1, rolle2]", result.getUserContextInformation().get("roles").toString());
         assertEquals(now, result.getLastAccess().get());
 
