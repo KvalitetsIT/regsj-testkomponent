@@ -99,7 +99,8 @@ public class ServiceStarter {
                 .withEnv("CONFIGURABLE_TEXT", "En tekst")
                 .withEnv("ENVIRONMENT", "DEV")
 
-                .withEnv("REMOTE_ENDPOINT", "http://remoteServer:1080")
+                .withEnv("REMOTE_ENDPOINT", "http://remoteServer:1080/unprotected")
+                .withEnv("REMOTE_ENDPOINT_PROTECTED", "http://remoteServer:1080/protected")
 
                 .withEnv("DO_SERVICE_CALL", "true")
 

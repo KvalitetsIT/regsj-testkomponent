@@ -3,6 +3,8 @@ package dk.kvalitetsit.regsj.testkomponent.service;
 import dk.kvalitetsit.regsj.testkomponent.dao.LastAccessedDao;
 import dk.kvalitetsit.regsj.testkomponent.dao.entity.LastAccessed;
 import dk.kvalitetsit.regsj.testkomponent.remote.TestkomponentClient;
+import dk.kvalitetsit.regsj.testkomponent.remote.model.Context;
+import dk.kvalitetsit.regsj.testkomponent.remote.model.ContextResponse;
 import dk.kvalitetsit.regsj.testkomponent.remote.model.HelloResponse;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
@@ -60,6 +62,21 @@ public class HtmlServiceImplTest {
             return helloResponse;
         });
 
+        Mockito.when(testkomponentClient.callTestClientProtected()).then(x -> {
+            var firstContext = new Context();
+            firstContext.setAttributeName("k1");
+            firstContext.setAttributeValue(Arrays.asList("v1", "v2"));
+
+            var secondContext = new Context();
+            secondContext.setAttributeName("k2");
+            secondContext.setAttributeValue(Collections.singletonList("v3"));
+
+            var contextResponse = new ContextResponse();
+            contextResponse.setContext(Arrays.asList(firstContext, secondContext));
+
+            return contextResponse;
+        });
+
         Mockito.when(userContextService.getUserAttributes()).then(x -> {
            var context = new HashMap<String, List<String>>();
            context.put("roles", Arrays.asList("rolle1", "rolle2"));
@@ -84,6 +101,9 @@ public class HtmlServiceImplTest {
         var serviceCalLResponse = result.getServiceCallResponse().get();
         assertEquals("1.0.0", serviceCalLResponse.getVersion());
         assertEquals("localhost", serviceCalLResponse.getHostname());
+        assertEquals(2, serviceCalLResponse.getContext().size());
+        assertEquals("v1, v2", serviceCalLResponse.getContext().get("k1"));
+        assertEquals("v3", serviceCalLResponse.getContext().get("k2"));
 
         Mockito.verify(lastAccessedDao, times(1)).getLatest();
         Mockito.verify(lastAccessedDao, times(1)).insert(Mockito.any(LastAccessed.class));
