@@ -1,12 +1,12 @@
 package dk.kvalitetsit.regsj.testkomponent;
-import com.google.common.net.MediaType;
-import org.openapitools.model.Context;
-import java.util.ArrayList;
 
 import com.github.dockerjava.api.model.VolumesFrom;
 import org.mockserver.client.server.MockServerClient;
 import org.mockserver.matchers.Times;
-import org.mockserver.model.*;
+import org.mockserver.model.HttpRequest;
+import org.mockserver.model.HttpResponse;
+import org.mockserver.model.JsonBody;
+import org.openapitools.model.Context;
 import org.openapitools.model.ContextResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +20,7 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -33,10 +34,14 @@ public class ServiceStarter {
     private String jdbcUrl;
     private Integer remoteServerMappedPort;
 
+    public static final String DB_USER = "testkomponentuser";;
+    public static final String DB_PASSWORD = "secret1234";
+    public static final String DB_NAME = "testkomponentdb";
+
     public void startServices() {
         dockerNetwork = Network.newNetwork();
 
-//        setupDatabaseContainer();
+        setupDatabaseContainer();
         startRemoteCallMockServer();
         // Do not cache thymeleaf templates when running from IDE.
         System.setProperty("spring.thymeleaf.cache", "false");
@@ -47,9 +52,9 @@ public class ServiceStarter {
         System.setProperty("userattributes.org.key", "Organisation");
         System.setProperty("REMOTE_ENDPOINT", "http://localhost:" + remoteServerMappedPort);
         System.setProperty("DO_SERVICE_CALL", "true");
-//        System.setProperty("JDBC.URL", jdbcUrl);
-//        System.setProperty("JDBC.USER", "hellouser");
-//        System.setProperty("JDBC.PASS", "secret1234");
+        System.setProperty("JDBC.URL", jdbcUrl);
+        System.setProperty("JDBC.USER", DB_USER);
+        System.setProperty("JDBC.PASS", DB_PASSWORD);
 
         SpringApplication.run((VideoLinkHandlerApplication.class));
     }
@@ -83,9 +88,9 @@ public class ServiceStarter {
 
                 .withEnv("LOG_LEVEL", "INFO")
 
-                .withEnv("JDBC_URL", "jdbc:mysql://mysql:3306/hellodb")
-                .withEnv("JDBC_USER", "hellouser")
-                .withEnv("JDBC_PASS", "secret1234")
+                .withEnv("JDBC_URL", "jdbc:mysql://mysql:3306/" + DB_NAME)
+                .withEnv("JDBC_USER", DB_USER)
+                .withEnv("JDBC_PASS", DB_PASSWORD)
 
                 .withEnv("spring.flyway.locations", "classpath:db/migration,filesystem:/app/sql")
 
@@ -150,9 +155,9 @@ public class ServiceStarter {
     private void setupDatabaseContainer() {
         // Database server for Organisation.
         MySQLContainer mysql = (MySQLContainer) new MySQLContainer("mysql:5.7")
-                .withDatabaseName("hellodb")
-                .withUsername("hellouser")
-                .withPassword("secret1234")
+                .withDatabaseName(DB_NAME)
+                .withUsername(DB_USER)
+                .withPassword(DB_PASSWORD)
                 .withNetwork(dockerNetwork)
                 .withNetworkAliases("mysql");
         mysql.start();

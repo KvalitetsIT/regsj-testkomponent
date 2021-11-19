@@ -1,6 +1,7 @@
 package dk.kvalitetsit.regsj.testkomponent.configuration;
 
 import dk.kvalitetsit.logging.RequestIdGenerator;
+import dk.kvalitetsit.regsj.testkomponent.dao.LastAccessedDao;
 import dk.kvalitetsit.regsj.testkomponent.remote.TestkomponentClient;
 import dk.kvalitetsit.regsj.testkomponent.remote.TestkomponentClientImpl;
 import dk.kvalitetsit.regsj.testkomponent.service.RestService;
@@ -27,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 @EnableWebMvc
 public class TestkomponentConfiguration implements WebMvcConfigurer {
-    private Logger logger = LoggerFactory.getLogger(TestkomponentConfiguration.class);
+    private final Logger logger = LoggerFactory.getLogger(TestkomponentConfiguration.class);
 
     @Autowired
     private UserContextInterceptor userContextInterceptor;
@@ -55,8 +56,14 @@ public class TestkomponentConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public HtmlService htmlService(VersionProvider versionProvider, @Value("${CONFIGURABLE_TEXT}") String configurableText, @Value("${ENVIRONMENT}") String environment, UserContextService userContextService, TestkomponentClient testkomponentClient, @Value("${DO_SERVICE_CALL}") boolean doServiceCall) {
-        return new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, doServiceCall, testkomponentClient);
+    public HtmlService htmlService(VersionProvider versionProvider,
+                                   @Value("${CONFIGURABLE_TEXT}") String configurableText,
+                                   @Value("${ENVIRONMENT}") String environment,
+                                   UserContextService userContextService,
+                                   TestkomponentClient testkomponentClient,
+                                   @Value("${DO_SERVICE_CALL}") boolean doServiceCall,
+                                   LastAccessedDao lastAccessedDao) {
+        return new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, doServiceCall, testkomponentClient, lastAccessedDao);
     }
 
     @Bean

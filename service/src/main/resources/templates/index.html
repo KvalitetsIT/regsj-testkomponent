@@ -30,6 +30,9 @@
             </tbody>
         </table>
 
+        <h2>Sidst kaldt</h2>
+        <div th:if="${lastAccess != null}" th:text="${lastAccess}" />
+
         <h2>Service kald</h2>
         <div th:if="${remoteResponse != null}">
             <table>

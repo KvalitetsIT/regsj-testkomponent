@@ -1,5 +1,6 @@
 package dk.kvalitetsit.regsj.testkomponent.service.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -11,6 +12,7 @@ public class HtmlInfo {
     private String environment;
     private Map<String, List<String>> userContextInformation;
     private ServiceCallResponse serviceCallResponse;
+    private LocalDateTime lastAccess;
 
     public String getVersion() {
         return version;
@@ -58,5 +60,13 @@ public class HtmlInfo {
 
     public void setServiceCallResponse(ServiceCallResponse serviceCallResponse) {
         this.serviceCallResponse = serviceCallResponse;
+    }
+
+    public void setLastAccess(LocalDateTime lastAccess) {
+        this.lastAccess = lastAccess;
+    }
+
+    public Optional<LocalDateTime> getLastAccess() {
+        return Optional.ofNullable(lastAccess);
     }
 }
