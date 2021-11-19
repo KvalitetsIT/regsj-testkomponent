@@ -17,6 +17,10 @@
 			<id>github-public1</id>
 			<url>https://public:&#103;hp_Y6nRFazi9yNo0IMpxwTFIagW352c1539nyfn@maven.pkg.github.com/kvalitetsit/*</url>
 		</repository>
+		<repository>
+			<id>github-public2</id>
+			<url>https://public:&#103;hp_Y6nRFazi9yNo0IMpxwTFIagW352c1539nyfn@maven.pkg.github.com/kvalitetsit/*</url>
+		</repository>
 	</repositories>
 
 	<modules>
@@ -90,6 +94,13 @@
 				<groupId>dk.kvalitetsit</groupId>
 				<artifactId>spring-prometheus-app-info</artifactId>
 				<version>${spring-prometheus-app-info-version}</version>
+			</dependency>
+
+			<!-- Audit event api -->
+			<dependency>
+				<groupId>dk.medcom</groupId>
+				<artifactId>medcom-audit-api</artifactId>
+				<version>1.0.0</version>
 			</dependency>
 
 			<!-- Request ID logger -->

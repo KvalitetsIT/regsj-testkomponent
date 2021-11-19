@@ -57,6 +57,7 @@ public class ServiceStarter {
         System.setProperty("JDBC.URL", jdbcUrl);
         System.setProperty("JDBC.USER", DB_USER);
         System.setProperty("JDBC.PASS", DB_PASSWORD);
+        System.setProperty("audit.nats.disabled", "true");
 
         SpringApplication.run((VideoLinkHandlerApplication.class));
     }
@@ -101,8 +102,9 @@ public class ServiceStarter {
 
                 .withEnv("REMOTE_ENDPOINT", "http://remoteServer:1080/unprotected")
                 .withEnv("REMOTE_ENDPOINT_PROTECTED", "http://remoteServer:1080/protected")
-
                 .withEnv("DO_SERVICE_CALL", "true")
+
+                .withEnv("audit.nats.disabled", "true")
 
                 .withEnv("usercontext.header.name", "x-sessiondata")
                 .withEnv("userattributes.org.key", "Organisation")

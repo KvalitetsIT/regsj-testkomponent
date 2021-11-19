@@ -12,6 +12,7 @@ import dk.kvalitetsit.regsj.testkomponent.session.UserContextInterceptor;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextServiceImpl;
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
+import dk.medcom.audit.client.AuditClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,8 @@ public class TestkomponentConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public RestService helloService(VersionProvider versionProvider, UserContextService userContextService) {
-        return new RestServiceImpl(versionProvider, userContextService);
+    public RestService restService(VersionProvider versionProvider, UserContextService userContextService, AuditClient auditClient) {
+        return new RestServiceImpl(versionProvider, userContextService, auditClient);
     }
 
     @Bean
@@ -65,8 +66,9 @@ public class TestkomponentConfiguration implements WebMvcConfigurer {
                                    UserContextService userContextService,
                                    TestkomponentClient testkomponentClient,
                                    @Value("${DO_SERVICE_CALL}") boolean doServiceCall,
-                                   LastAccessedDao lastAccessedDao) {
-        return new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, doServiceCall, testkomponentClient, lastAccessedDao);
+                                   LastAccessedDao lastAccessedDao,
+                                   AuditClient auditClient) {
+        return new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, doServiceCall, testkomponentClient, lastAccessedDao, auditClient);
     }
 
     @Bean

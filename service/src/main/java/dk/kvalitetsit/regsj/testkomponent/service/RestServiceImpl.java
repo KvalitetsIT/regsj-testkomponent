@@ -4,6 +4,7 @@ import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutput;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutputProtected;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
+import dk.medcom.audit.client.AuditClient;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
@@ -12,7 +13,7 @@ public class RestServiceImpl implements RestService {
     private final VersionProvider versionProvider;
     private final UserContextService userContextService;
 
-    public RestServiceImpl(VersionProvider versionProvider, UserContextService userContextService) {
+    public RestServiceImpl(VersionProvider versionProvider, UserContextService userContextService, AuditClient auditClient) {
         this.versionProvider = versionProvider;
         this.userContextService = userContextService;
     }

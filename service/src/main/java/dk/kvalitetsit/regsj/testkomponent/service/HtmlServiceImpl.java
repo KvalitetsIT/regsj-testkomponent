@@ -1,4 +1,5 @@
 package dk.kvalitetsit.regsj.testkomponent.service;
+import java.time.OffsetDateTime;
 
 import dk.kvalitetsit.regsj.testkomponent.dao.LastAccessedDao;
 import dk.kvalitetsit.regsj.testkomponent.dao.entity.LastAccessed;
@@ -7,6 +8,8 @@ import dk.kvalitetsit.regsj.testkomponent.service.model.HtmlInfo;
 import dk.kvalitetsit.regsj.testkomponent.service.model.ServiceCallResponse;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
+import dk.medcom.audit.client.AuditClient;
+import dk.medcom.audit.client.api.v1.AuditEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,7 @@ public class HtmlServiceImpl implements HtmlService {
     private final boolean doServiceCall;
     private final TestkomponentClient testkomponentClient;
     private final LastAccessedDao lastAccessedDao;
+    private final AuditClient auditClient;
 
     public HtmlServiceImpl(VersionProvider VersionProvider,
                            String configurableText,
@@ -33,7 +37,7 @@ public class HtmlServiceImpl implements HtmlService {
                            UserContextService userContextService,
                            boolean doServiceCall,
                            TestkomponentClient testkomponentClient,
-                           LastAccessedDao lastAccessedDao) {
+                           LastAccessedDao lastAccessedDao, AuditClient auditClient) {
         this.VersionProvider = VersionProvider;
         this.configurableText = configurableText;
         this.environment = environment;
@@ -41,6 +45,7 @@ public class HtmlServiceImpl implements HtmlService {
         this.doServiceCall = doServiceCall;
         this.testkomponentClient = testkomponentClient;
         this.lastAccessedDao = lastAccessedDao;
+        this.auditClient = auditClient;
     }
 
     @Override
@@ -74,7 +79,24 @@ public class HtmlServiceImpl implements HtmlService {
 
         updateLastAccess();
 
+        addAuditLog(htmlInfo);
+
         return htmlInfo;
+    }
+
+    private void addAuditLog(HtmlInfo htmlInfo) {
+        var auditEvent = new AuditEvent<HtmlInfo>();
+
+        auditEvent.setAuditData(htmlInfo);
+        auditEvent.setOrganisationCode("some_org");
+        auditEvent.setOperation("get");
+        auditEvent.setAuditEventDateTime(OffsetDateTime.now());
+        auditEvent.setSource("testkomponent-a");
+        auditEvent.setIdentifier("");
+        auditEvent.setUser("some_user");
+        auditEvent.setResource("html");
+
+        auditClient.addAuditEntry(auditEvent);
     }
 
     private void updateLastAccess() {

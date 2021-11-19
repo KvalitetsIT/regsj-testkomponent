@@ -8,6 +8,8 @@ import dk.kvalitetsit.regsj.testkomponent.remote.model.ContextResponse;
 import dk.kvalitetsit.regsj.testkomponent.remote.model.HelloResponse;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
+import dk.medcom.audit.client.AuditClient;
+import dk.medcom.audit.client.api.v1.AuditEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -27,6 +29,7 @@ public class HtmlServiceImplTest {
     private UserContextService userContextService;
     private TestkomponentClient testkomponentClient;
     private LastAccessedDao lastAccessedDao;
+    private AuditClient auditClient;
 
     @Before
     public void setup() {
@@ -36,8 +39,9 @@ public class HtmlServiceImplTest {
         userContextService = Mockito.mock(UserContextService.class);
         testkomponentClient = Mockito.mock(TestkomponentClient.class);
         lastAccessedDao = Mockito.mock(LastAccessedDao.class);
+        auditClient = Mockito.mock(AuditClient.class);
 
-        htmlService = new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, true, testkomponentClient, lastAccessedDao);
+        htmlService = new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, true, testkomponentClient, lastAccessedDao, auditClient);
     }
 
     @Test
@@ -107,6 +111,7 @@ public class HtmlServiceImplTest {
 
         Mockito.verify(lastAccessedDao, times(1)).getLatest();
         Mockito.verify(lastAccessedDao, times(1)).insert(Mockito.any(LastAccessed.class));
+        Mockito.verify(auditClient, times(1)).addAuditEntry(Mockito.any(AuditEvent.class));
     }
 
     @Test
@@ -122,11 +127,12 @@ public class HtmlServiceImplTest {
             return context;
         });
 
-        var service = new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, false, testkomponentClient, lastAccessedDao);
+        var service = new HtmlServiceImpl(versionProvider, configurableText, environment, userContextService, false, testkomponentClient, lastAccessedDao, auditClient);
         var result = service.getHtmlInfo();
 
         assertNotNull(result);
         assertTrue(result.getServiceCallResponse().isEmpty());
         assertTrue(result.getLastAccess().isEmpty());
+        Mockito.verify(auditClient, times(1)).addAuditEntry(Mockito.any(AuditEvent.class));
     }
 }

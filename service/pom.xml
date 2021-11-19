@@ -72,6 +72,12 @@
             <artifactId>spring-request-id-logger</artifactId>
         </dependency>
 
+        <!-- Audit API -->
+        <dependency>
+            <groupId>dk.medcom</groupId>
+            <artifactId>medcom-audit-api</artifactId>
+        </dependency>
+
         <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
