@@ -60,6 +60,8 @@ public class HtmlServiceImpl implements HtmlService {
         htmlInfo.setHostName(Inet4Address.getLocalHost().getHostName());
         htmlInfo.setConfigurableText(configurableText);
         htmlInfo.setEnvironment(environment);
+        htmlInfo.setUserContextInformation(new HashMap<>());
+        userContextService.getUserAttributes().forEach((k,v) -> htmlInfo.getUserContextInformation().put(k.replace(',', '_'), v));
         htmlInfo.setUserContextInformation(userContextService.getUserAttributes());
         lastAccessed.ifPresent(x -> htmlInfo.setLastAccess(x.getAccessTime()));
 

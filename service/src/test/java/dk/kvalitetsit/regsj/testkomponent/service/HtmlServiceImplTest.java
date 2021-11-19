@@ -68,7 +68,7 @@ public class HtmlServiceImplTest {
 
         Mockito.when(testkomponentClient.callTestClientProtected()).then(x -> {
             var firstContext = new Context();
-            firstContext.setAttributeName("k1");
+            firstContext.setAttributeName("k1.punktum");
             firstContext.setAttributeValue(Arrays.asList("v1", "v2"));
 
             var secondContext = new Context();
@@ -106,7 +106,7 @@ public class HtmlServiceImplTest {
         assertEquals("1.0.0", serviceCalLResponse.getVersion());
         assertEquals("localhost", serviceCalLResponse.getHostname());
         assertEquals(2, serviceCalLResponse.getContext().size());
-        assertEquals("v1, v2", serviceCalLResponse.getContext().get("k1"));
+        assertEquals("v1, v2", serviceCalLResponse.getContext().get("k1_punktum"));
         assertEquals("v3", serviceCalLResponse.getContext().get("k2"));
 
         Mockito.verify(lastAccessedDao, times(1)).getLatest();
