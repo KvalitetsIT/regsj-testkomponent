@@ -1,7 +1,7 @@
 ![Build Status](https://github.com/KvalitetsIT/regsj-testkomponent/workflows/CICD/badge.svg) ![Test Coverage](.github/badges/jacoco.svg)
 # regsj-testkomponent
 
-Region Sjælland test component.
+Region Sjælland test component. iTrigger build.
 
 ## A good citizen
 
