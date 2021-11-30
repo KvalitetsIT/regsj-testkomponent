@@ -17,7 +17,7 @@ jobs:
         echo "DOCKER_SERVICE=regsj/regsj-testkomponent" >> $GITHUB_ENV
         echo "DOCKER_HARBOR_SERVICE=dockerregistry.regsj.hosting.kitkube.dk/regsj/regsj-testkomponent" >> $GITHUB_ENV
         echo "DOCKER_HARBOR_SERVICE_B=dockerregistry.regsj.hosting.kitkube.dk/regsj/regsj-testkomponent-b" >> $GITHUB_ENV
-        echo "DOCKER_HARBOR_SERVICE_B=dockerregistry.regsj.hosting.kitkube.dk/regsj/regsj-testkomponent-c" >> $GITHUB_ENV
+        echo "DOCKER_HARBOR_SERVICE_C=dockerregistry.regsj.hosting.kitkube.dk/regsj/regsj-testkomponent-c" >> $GITHUB_ENV
         echo "DOCKER_DOCUMENTATION=regsj/regsj-testkomponent-documentation" >> $GITHUB_ENV
         echo "DOCKER_HARBOR_DOCUMENTATION=dockerregistry.regsj.hosting.kitkube.dk/regsj/regsj-testkomponent-documentation" >> $GITHUB_ENV
 
