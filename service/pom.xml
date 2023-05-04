@@ -74,8 +74,8 @@
 
         <!-- Audit API -->
         <dependency>
-            <groupId>dk.medcom</groupId>
-            <artifactId>medcom-audit-api</artifactId>
+            <groupId>dk.kvalitetsit</groupId>
+            <artifactId>audit-api</artifactId>
         </dependency>
 
         <!-- Servlet API -->

@@ -12,7 +12,7 @@ import dk.kvalitetsit.regsj.testkomponent.session.UserContextInterceptor;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextServiceImpl;
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
-import dk.medcom.audit.client.AuditClient;
+import dk.kvalitetsit.audit.client.AuditClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
