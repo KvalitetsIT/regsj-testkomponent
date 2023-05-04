@@ -4,7 +4,7 @@ import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutput;
 import dk.kvalitetsit.regsj.testkomponent.service.model.HelloServiceOutputProtected;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
-import dk.medcom.audit.client.AuditClient;
+import dk.kvalitetsit.audit.client.AuditClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

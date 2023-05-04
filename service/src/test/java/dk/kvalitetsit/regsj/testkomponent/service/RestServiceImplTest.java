@@ -2,7 +2,7 @@ package dk.kvalitetsit.regsj.testkomponent.service;
 
 import dk.kvalitetsit.prometheus.app.info.actuator.VersionProvider;
 import dk.kvalitetsit.regsj.testkomponent.session.UserContextService;
-import dk.medcom.audit.client.AuditClient;
+import dk.kvalitetsit.audit.client.AuditClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
